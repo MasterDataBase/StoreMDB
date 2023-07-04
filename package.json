@@ -1,0 +1,26 @@
+{
+  "name": "storemdb",
+  "version": "1.0.0",
+  "description": "storage management database",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MasterDataBase/StoreMDB.git"
+  },
+  "author": "MDB",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MasterDataBase/StoreMDB/issues"
+  },
+  "homepage": "https://github.com/MasterDataBase/StoreMDB#readme",
+  "dependencies": {
+    "@prisma/client": "^4.16.2",
+    "mongodb": "^5.6.0"
+  },
+  "devDependencies": {
+    "prisma": "^4.16.2"
+  }
+}
