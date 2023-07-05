@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Webcam Capture</title>
+</head>
+<body>
+  <video id="video" width="640" height="480" autoplay></video>
+  <button id="capture-btn">Capture</button>
+  <canvas id="canvas" width="640" height="480"></canvas>
+
+  <script>
+    // Get references to the video, capture button, and canvas elements
+    const video = document.getElementById('video');
+    const captureBtn = document.getElementById('capture-btn');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+    // Access the webcam stream and display it in the video element
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then((stream) => {
+        video.srcObject = stream;
+      })
+      .catch((error) => {
+        console.error('Failed to access webcam:', error);
+      });
+
+    // Capture image from the video stream when the capture button is clicked
+    captureBtn.addEventListener('click', () => {
+      // Draw the current frame from the video onto the canvas
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Get the image data from the canvas as a base64 string
+      const imageData = canvas.toDataURL('image/jpeg');
+
+      // Use the captured image data as needed (e.g., send it to the server, process it, etc.)
+      console.log('Image data:', imageData);
+    });
+  </script>
+</body>
+</html>

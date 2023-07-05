@@ -1,0 +1,53 @@
+<body>
+    <video id="video" autoplay playsinline style="width:100%; height:auto;"></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <script>
+      // Helper function to access the media devices
+      function getMediaDevices() {
+        return navigator.mediaDevices.getUserMedia({ video: true });
+      }
+  
+      // Initialize QuaggaJS once the media devices are ready
+      getMediaDevices()
+        .then(function (stream) {
+          // Display the video stream in the video element
+          var videoElement = document.getElementById('video');
+          videoElement.srcObject = stream;
+  
+          // Initialize QuaggaJS with the video element
+          Quagga.init(
+            {
+              inputStream: {
+                type: 'LiveStream',
+                target: videoElement
+              },
+              decoder: {
+                readers: ['ean_reader', 'code_128_reader'] // Specify the barcode reader type (e.g., EAN reader)
+              },
+              locate: true
+            },
+            function (err) {
+              if (err) {
+                console.error('Failed to initialize Quagga:', err);
+                return;
+              }
+              console.log('Quagga initialized successfully');
+  
+              // Start barcode scanning
+              Quagga.start();
+            }
+          );
+  
+          // Listen for barcode detection
+          Quagga.onDetected(function (result) {
+            console.log('Barcode data:', result.codeResult);
+          });
+        })
+        .catch(function (err) {
+          console.error('Error accessing media devices:', err);
+        });
+    </script>
+  </body>
+  
