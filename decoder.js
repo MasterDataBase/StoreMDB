@@ -42,8 +42,9 @@ getMediaDevices()
 
     // Listen for barcode detection
     Quagga.onDetected(function (result) {
-    //console.log('Barcode data:', result.codeResult);
-    highlightBarcode(result);
+    console.log('Barcode data:', result.codeResult);
+    // highlightBarcode(result);
+    SendBarcodeToServer(result);
     Quagga.stop();
     });
 
@@ -52,37 +53,57 @@ getMediaDevices()
 ///          });
 
     // Function to highlight the detected barcode
-    function highlightBarcode(result) {
-        var canvas = document.getElementById('canvas');
-        var overlay = document.getElementById('overlay');
-        var context = canvas.getContext('2d');
+    // function highlightBarcode(result) {
+    //     var canvas = document.getElementById('canvas');
+    //     var overlay = document.getElementById('overlay');
+    //     var context = canvas.getContext('2d');
 
 
-    // Clear the overlay
-    overlay.innerHTML = '';
+    //     // Clear the overlay
+    //     overlay.innerHTML = '';
 
-    // Get the barcode location coordinates
-    var box = result.box;
+    //     // Get the barcode location coordinates
+    //     var box = result.box;
 
-    console.log(context);
+    //     console.log(context);
 
-    // Draw the rectangular overlay
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.beginPath();
-    context.moveTo(box[0].x, box[0].y);
-    context.lineTo(box[1].x, box[1].y);
-    context.lineTo(box[2].x, box[2].y);
-    context.lineTo(box[3].x, box[3].y);
-    context.closePath();
-    context.lineWidth = 10;
-    context.strokeStyle = 'red';
-    context.stroke();
+    //     // Draw the rectangular overlay
+    //     context.clearRect(0, 0, canvas.width, canvas.height);
+    //     context.beginPath();
+    //     context.moveTo(box[0].x, box[0].y);
+    //     context.lineTo(box[1].x, box[1].y);
+    //     context.lineTo(box[2].x, box[2].y);
+    //     context.lineTo(box[3].x, box[3].y);
+    //     context.closePath();
+    //     context.lineWidth = 10;
+    //     context.strokeStyle = 'red';
+    //     context.stroke();
 
-    // Add the overlay to the DOM
-    overlay.appendChild(canvas);
-    }
+    //     // Add the overlay to the DOM
+    //     overlay.appendChild(canvas);
+    // }
     
 })
 .catch(function (err) {
     console.error('Error accessing media devices:', err);
 });
+
+function SendBarcodeToServer(result){
+    fetch('/barcodeScanned',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({bardcode: result.codeResult.code}),
+    })
+    .then(function(response){
+        if(response.ok){
+            console.log('Barcode inviato con successo');
+        }else{
+            console.error('Errore sull invio barcode');
+        }
+    })
+    .catch(function(error){
+        console.log('Error on method SendBarcodeToServer');
+    });
+}
