@@ -1,53 +1,58 @@
-const { MongoClient } = require('mongodb');
+const express = require('express');
 
-var client;
-var db;
-var collection;
+//const app = express();
 
-async function connectToMongoDB() {
-  const uri = 'mongodb://127.0.0.1:27017/StoreMDB';
-  
-  try {
-    // Create a new MongoClient
-    client = new MongoClient(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+var http = require('http');
+var fs = require('fs');
+
+//app.use(express.json());
+
+///Create server
+var FServer = function (req, res){
+  if (req.url == '/') {
+      // fs.readFile('indexQuagga.html', function(err, data) {
+      //   res.writeHead(200, {'Content-Type': 'text/html'});
+      //   res.write(data);
+      //   res.end();
+      // });
+  }else if(req.url == '/decoder.js'){
+      // fs.readFile('decoder.js', function(err, data) {
+      //   res.writeHead(200, {'Content-Type': 'text/javascript'});
+      //   res.write(data);
+      //   res.end();
+      // });
+  }else if(req.url == '/barcodeScanned'){
+    let body = '';
+    req.on('data', function (chunk) {
+      body += chunk;
     });
-
-    // Connect to the MongoDB server
-    await client.connect();
-
-    console.log('Connected to MongoDB');
-
-    db = client.db('StoreMDB');
-    collection = db.collection('StoreMDB');
-
-    // Perform MongoDB operations here
-
-    await findDocuments();
-
-    // Close the connection
-    await client.close();
-    console.log('Connection closed');
-  } catch (err) {
-    console.error('Failed to connect to MongoDB:', err);
+    req.on('end', function () {
+      let obj = JSON.parse(body);
+      console.log(obj);
+      findUser();
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.write('OK');
+      res.end();
+    });
   }
-}
+};
 
-connectToMongoDB();
+http.createServer(FServer).listen(8080);
 
+///Connect to mongoDB vai prisma
+const { PrismaClient } = require('@prisma/client')
 
-async function findDocuments() {
+const prisma = new PrismaClient()
+
+async function findUser(barcode) {
   try {
-    const query = { "status": 'InStock' }; // Example query
-
-    const documents = await collection.find(query).toArray();
-
-    console.log('Found documents:');
-    console.log(documents);
-  } catch (err) {
-    console.error('Failed to find documents:', err);
+    const obj = await prisma.storeMDB.findFirst({where: {SN:barcode}});
+    console.log(obj);
+  } catch (error) {
+    console.error(error);
   } finally {
-    return;
+    await prisma.$disconnect();
   }
 }
+
+
