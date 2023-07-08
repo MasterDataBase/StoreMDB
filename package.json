@@ -2,9 +2,11 @@
   "name": "storemdb",
   "version": "1.0.0",
   "description": "storage management database",
-  "main": "index.js",
+  "main": "index_old.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "local": "cd ./Backend && node index_old.js",
+    "migratelocal:monogodb": "dotenv -e .envLocal -- npx prisma migrate dev"
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,7 @@
     "node-webcam": "^0.8.2"
   },
   "devDependencies": {
+    "dotenv-cli": "^7.2.1",
     "prisma": "^4.16.2"
   }
 }

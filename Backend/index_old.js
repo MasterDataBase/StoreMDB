@@ -29,7 +29,10 @@ async function findUser(barcode) {
 
 ///Express Module
 app.get('/', (req, res) => {
-  app.sendFile(path.join(__dirname + '/index.html'));
+  //app.sendFile(path.join(__dirname + '/index.html'));
+  var indexPath = path.resolve(path.join(__dirname + '/index.html'));
+  console.log(indexPath);
+  app.sendFile(indexPath);
 });
 
 app.get('/decoder.js', (req, res) => {

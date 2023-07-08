@@ -3,6 +3,20 @@
     <canvas id="canvas" style="display:none;"></canvas>
     <div id="overlay"></div>
 
+
+    <style>
+      #barcodeContainer {
+        position: relative;
+        width: 500px;
+        height: 300px;
+      }
+
+      #overlay {
+        position: absolute;
+        border: 2px solid red;
+        box-sizing: border-box;
+      }      
+    </style>    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
     <script type="text/javascript" src="/static/decoder.js"></script>
     <!-- <script>

@@ -16,15 +16,15 @@ getMediaDevices()
     Quagga.init(
     {
         inputStream: {
-        type: 'LiveStream',
-        target: videoElement
+            type: 'LiveStream',
+            target: videoElement
         },
         decoder: {
-        readers: ['ean_reader', 'code_128_reader'] // Specify the barcode reader type (e.g., EAN reader)
+            readers: ['ean_reader', 'code_128_reader'] // Specify the barcode reader type (e.g., EAN reader)
         },
         locator: {
-        patchSize: 'large',
-        halfSample: true
+            patchSize: 'large',
+            halfSample: true
         },
         locate: true
     },
@@ -42,12 +42,36 @@ getMediaDevices()
 
     // Listen for barcode detection
     Quagga.onDetected(function (result) {
-    console.log('Barcode data:', result.codeResult);
-    // highlightBarcode(result);
-    SendBarcodeToServer(result);
-    Quagga.stop();
+        console.log(result);
+        console.log('Barcode data:', result.codeResult);
+        // highlightBarcode(result);
+        newHighlight(result);
+        SendBarcodeToServer(result);
+        Quagga.stop();
     });
 
+
+    function newHighlight(result){
+        const barcodeContainer = document.getElementById("overlay");
+
+        result.boxes.forEach(box => {
+            const rectangle = document.createElement("div");
+            rectangle.className = "barcodeRectangle";
+            
+            const [topLeft, topRight, bottomRight, bottomLeft] = box;
+            const x = topLeft[0];
+            const y = topLeft[1];
+            const width = topRight[0] - topLeft[0];
+            const height = bottomLeft[1] - topLeft[1];
+    
+            rectangle.style.left = `${x}px`;
+            rectangle.style.top = `${y}px`;
+            rectangle.style.width = `${width}px`;
+            rectangle.style.height = `${height}px`;
+    
+            barcodeContainer.appendChild(rectangle);
+        });
+    }
 ///          Quagga.onProcessed(function (result) {
 ///            highlightBarcode(result);
 ///          });
