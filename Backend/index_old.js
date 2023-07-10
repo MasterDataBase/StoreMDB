@@ -8,11 +8,8 @@ var fs = require('fs');
 const app = express();
 app.use(express.json());
 app.use(express.static('public'));
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'public'));
 
-
+app.use('/static', express.static(path.join(__dirname, 'public')))
 
 ///Connect to mongoDB vai prisma
 const { PrismaClient } = require('@prisma/client')
@@ -20,16 +17,13 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function findUser(barcode) {
-  let obj; 
   try {
-    obj = await prisma.storeMDB.findFirst({where: {SN:barcode}});
-    console.debug(obj);    
+    const obj = await prisma.storeMDB.findFirst({where: {SN:barcode}});
+    console.log(obj);
   } catch (error) {
     console.error(error);
-    obj = "empty";
-  } finally {    
+  } finally {
     await prisma.$disconnect();
-    return obj
   }
 }
 
@@ -46,26 +40,23 @@ app.get('/decoder.js', (req, res) => {
 });
 
 app.post('/barcodeScanned', (req, res) => {
-  let obj = req.body;
-  // let result = await findUser(obj.barcode);
-  // console.log(result);
-  // if(result != "empty"){
-  //   return res.render('resultBarcode',  { data: result });
+  // if ((req.body != null) || (req.body |= '')) {
+  //   let body = JSON.parse(req.body);
   // }
-  // res.status(200).type('html').send('OK');
-  findUser(obj.barcode)
-  .then(result => {
-    console.debug(result);
-    if (result != null) {
-      return res.render('resultBarcode', { data: result });
-    }else{
-      res.status(201).type('html').send('user not found');
-    }
-  })
-  .catch(error => {
-    console.error(error);
-    res.status(500).json({ error: 'Error finding user' });
-  });
+  let obj = req.body;
+  console.log(obj);
+  findUser(obj.barcode);
+  res.status(200).type('html').send('OK');
+
+  // req.on('end', function () {
+  //   // let obj = JSON.parse(body);
+  //   console.log(req);
+  //   findUser();
+  //   //res.writeHead(200, { 'Content-Type': 'text/html' });
+  //   res.write(JSON.stringify({status: 'OK'}));
+  //   //res.write('OK');
+  //   res.end();
+  // });
 });
 
 const server = app.listen(8080, () => {
