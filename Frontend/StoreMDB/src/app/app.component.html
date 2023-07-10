@@ -1,0 +1,39 @@
+<div class="error-message" *ngIf="errorMessage">
+  {{ errorMessage }}
+</div>
+
+<div id="scanner-container">
+  <!-- QuaggaJS will populate this element -->
+</div>
+
+<div class="instructions">
+  This is a companion app for the blog post located <a target="_blank" href="https://blog.classycode.com/">here</a>.
+  The source code is available on <a target="_blank" href="https://github.com/classycodeoss/mobile-scanning-demo">Github</a>.
+</div>
+
+<div class="controls">
+  <form>
+    <input id="acceptAnyCode" type="checkbox" [(ngModel)]="acceptAnyCode" name="acceptAnyCode" required/>
+    <label for="acceptAnyCode">Accept any code</label>
+    &nbsp;
+    <button (click)="clearCart()">Clear cart</button>
+  </form>
+
+</div>
+
+<div class="shopping-cart">
+
+  <span *ngIf="items.length === 0 else shoppingCartItems">Shopping cart is empty</span>
+  <ng-template #shoppingCartItems>
+
+    <app-shopping-cart-item
+      *ngFor="let articleAndCount of items"
+      [article]="articleAndCount[0]"
+      [count]="articleAndCount[1]">
+    </app-shopping-cart-item>
+
+    <div class="shopping-cart-total">
+      Total: {{ totalPrice }} USD
+    </div>
+  </ng-template>
+</div>
