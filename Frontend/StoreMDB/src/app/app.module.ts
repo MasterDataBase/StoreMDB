@@ -6,7 +6,7 @@ import { ServiceWorkerModule, SwRegistrationOptions } from '@angular/service-wor
 import { AppComponent } from './app.component';
 import { ShoppingCartItemComponent } from './shopping-cart-item/shopping-cart-item.component';
 
-import { environment } from '../environments/environment';
+// import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { environment } from '../environments/environment';
       provide: SwRegistrationOptions,
       useFactory: () => {
         return {
-          enabled: environment.production,
+          // enabled: environment.production,
           registrationStrategy: 'registerImmediately'
         };
       }

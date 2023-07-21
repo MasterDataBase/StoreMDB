@@ -4,7 +4,7 @@ import Quagga from '@ericblade/quagga2';
 import { Article } from './article';
 import { ShoppingCart } from './shopping-cart';
 import { UpdateService } from './update.service';
-import { environment } from '../environments/environment';
+// import { environment } from '../environments/environment';
 import { getMainBarcodeScanningCamera } from './camera-access';
 
 @Component({
@@ -44,11 +44,11 @@ export class AppComponent implements AfterViewInit {
 
     this.initializeScanner();
 
-    if (environment.production) {
-      setTimeout(() => {
-        this.updateService.checkForUpdates();
-      }, 10000);
-    }
+    // if (environment.production) {
+    //   setTimeout(() => {
+    //     this.updateService.checkForUpdates();
+    //   }, 10000);
+    // }
   }
 
   private initializeScanner(): Promise<void> {
