@@ -1,43 +1,15 @@
 const express = require('express');
-
-//const app = express();
+const path = require('path');
 
 var http = require('http');
 var fs = require('fs');
 
-//app.use(express.json());
 
-///Create server
-var FServer = function (req, res){
-  if (req.url == '/') {
-      // fs.readFile('indexQuagga.html', function(err, data) {
-      //   res.writeHead(200, {'Content-Type': 'text/html'});
-      //   res.write(data);
-      //   res.end();
-      // });
-  }else if(req.url == '/decoder.js'){
-      // fs.readFile('decoder.js', function(err, data) {
-      //   res.writeHead(200, {'Content-Type': 'text/javascript'});
-      //   res.write(data);
-      //   res.end();
-      // });
-  }else if(req.url == '/barcodeScanned'){
-    let body = '';
-    req.on('data', function (chunk) {
-      body += chunk;
-    });
-    req.on('end', function () {
-      let obj = JSON.parse(body);
-      console.log(obj);
-      findUser();
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.write('OK');
-      res.end();
-    });
-  }
-};
+const app = express();
+app.use(express.json());
+app.use(express.static('public'));
 
-http.createServer(FServer).listen(8080);
+app.use('/static', express.static(path.join(__dirname, 'public')))
 
 ///Connect to mongoDB vai prisma
 const { PrismaClient } = require('@prisma/client')
@@ -55,4 +27,38 @@ async function findUser(barcode) {
   }
 }
 
+///Express Module
+app.get('/', (req, res) => {
+  //app.sendFile(path.join(__dirname + '/index.html'));
+  var indexPath = path.resolve(path.join(__dirname + '/index.html'));
+  console.log(indexPath);
+  app.sendFile(indexPath);
+});
 
+app.get('/decoder.js', (req, res) => {
+  app.sendFile(path.join(__dirname + '/decoder.js'));
+});
+
+app.post('/barcodeScanned', (req, res) => {
+  // if ((req.body != null) || (req.body |= '')) {
+  //   let body = JSON.parse(req.body);
+  // }
+  let obj = req.body;
+  console.log(obj);
+  findUser(obj.barcode);
+  res.status(200).type('html').send('OK');
+
+  // req.on('end', function () {
+  //   // let obj = JSON.parse(body);
+  //   console.log(req);
+  //   findUser();
+  //   //res.writeHead(200, { 'Content-Type': 'text/html' });
+  //   res.write(JSON.stringify({status: 'OK'}));
+  //   //res.write('OK');
+  //   res.end();
+  // });
+});
+
+const server = app.listen(8080, () => {
+  console.log('Server is running on port 8080');
+});

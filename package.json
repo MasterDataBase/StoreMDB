@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/MasterDataBase/StoreMDB#readme",
   "dependencies": {
+    "@angular/cli": "^16.1.5",
     "@ericblade/quagga2": "^1.8.2",
     "@prisma/client": "^4.16.2",
     "@zxing/library": "^0.20.0",
