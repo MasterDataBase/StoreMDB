@@ -1,0 +1,26 @@
+{
+  "runOnStartup": true,
+  "terminals": [
+    {
+      "splitTerminals": [
+        {
+          "name": "Node",
+          "commands": [
+            "npm test"
+          ]
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "Angular",
+          "commands": [
+            "cd Frontend\\StoreMDB",
+            "ng serve"
+          ]
+        }
+      ]
+    }
+  ]
+}

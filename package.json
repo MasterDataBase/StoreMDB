@@ -4,7 +4,7 @@
   "description": "storage management database",
   "main": "index_old.js",
   "scripts": {
-    "test": "test",
+    "test": "cd Backend && node index.js",
     "local": "cd ./Backend && node index_old.js",
     "migratelocal:monogodb": "dotenv -e .envLocal -- npx prisma migrate dev"
   },
