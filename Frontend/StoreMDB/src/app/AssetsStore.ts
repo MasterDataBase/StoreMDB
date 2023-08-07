@@ -1,4 +1,7 @@
 export interface AssetsStore {
-    id: number;
+    id: string;
+    SN: number
+    category: string;
     name: string;
+    status: string
 }

@@ -11,6 +11,9 @@ app.use(express.static('public'));
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
 
+const cors = require('cors');
+app.use(cors());
+
 ///Connect to mongoDB vai prisma
 const { PrismaClient } = require('@prisma/client')
 
