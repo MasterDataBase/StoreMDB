@@ -16,16 +16,7 @@ const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
 
-async function findUser(barcode) {
-  try {
-    const obj = await prisma.storeMDB.findFirst({where: {SN:barcode}});
-    console.log(obj);
-  } catch (error) {
-    console.error(error);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
+
 
 ///Express Module
 app.get('/', (req, res) => {
@@ -40,24 +31,30 @@ app.get('/decoder.js', (req, res) => {
 });
 
 app.post('/barcodeScanned', (req, res) => {
-  // if ((req.body != null) || (req.body |= '')) {
-  //   let body = JSON.parse(req.body);
-  // }
   let obj = req.body;
   console.log(obj);
-  findUser(obj.barcode);
-  res.status(200).type('html').send('OK');
-
-  // req.on('end', function () {
-  //   // let obj = JSON.parse(body);
-  //   console.log(req);
-  //   findUser();
-  //   //res.writeHead(200, { 'Content-Type': 'text/html' });
-  //   res.write(JSON.stringify({status: 'OK'}));
-  //   //res.write('OK');
-  //   res.end();
-  // });
+  findUser(obj.barcode)
+  .then(result => {
+    console.log(result);
+    res.status(200).type('json').send(result);
+  })
+  .catch(error => {
+    console.error('Error: ', error );
+    res.status(500).send('Internal server error');
+  });
 });
+
+async function findUser(barcode) {
+  try {
+    let obj; 
+    obj = await prisma.storeMDB.findFirst({where: {SN:barcode}});
+    return obj;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
 
 const server = app.listen(8080, () => {
   console.log('Server is running on port 8080');
