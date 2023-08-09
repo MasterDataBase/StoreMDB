@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import Quagga from '@ericblade/quagga2';
 
 @Component({
   selector: 'app-root',

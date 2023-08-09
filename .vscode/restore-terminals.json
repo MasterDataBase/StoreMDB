@@ -14,10 +14,20 @@
     {
       "splitTerminals": [
         {
-          "name": "Angular",
+          "name": "Angular Server",
           "commands": [
             "cd Frontend\\StoreMDB",
             "ng serve"
+          ]
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "Angular Components",
+          "commands": [
+            "cd Frontend\\StoreMDB"
           ]
         }
       ]
