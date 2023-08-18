@@ -1,3 +1,4 @@
+///Lista necessaria per identificiare se la stringa riportata è "posteriore" o meno
 const environmentFacingCameraLabelStrings: string[] = [
     'rear',
     'back',
@@ -39,6 +40,7 @@ const environmentFacingCameraLabelStrings: string[] = [
     'बैक'
 ];
 
+///Funzione che prende il nome della camera e controlla se questa è una camera posteriore o meno.
 export function isKnownBackCameraLabel(label: string): boolean {
     const labelLowerCase = label.toLowerCase();
     return environmentFacingCameraLabelStrings.some(str => {
@@ -46,7 +48,9 @@ export function isKnownBackCameraLabel(label: string): boolean {
     });
 }
 
+///Funzione che controlla tutte le camere collegate, se una è posteriore o meno
 export function getMainBarcodeScanningCamera(devices: MediaDeviceInfo[]): MediaDeviceInfo | undefined {
+    console.log("List cameras:", devices);
     const backCameras = devices.filter(v => isKnownBackCameraLabel(v.label));
     const sortedBackCameras = backCameras.sort((a, b) => a.label.localeCompare(b.label));
     return sortedBackCameras.length > 0 ? sortedBackCameras[0] : undefined;

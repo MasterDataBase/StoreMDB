@@ -5,9 +5,9 @@ import { getMainBarcodeScanningCamera } from '../camera-access';
 @Component({
   selector: 'app-barcode-scanner',
   templateUrl: './barcode-scanner.component.html',
-  styleUrls: ['./barcode-scanner.component.css']
+  styleUrls: ['./barcode-scanner.component.scss']
 })
-export class BarcodeScannerComponent implements AfterViewInit{
+export class BarcodeScannerComponent implements AfterViewInit {
   constructor(
     private scannerContainer: ElementRef,
     private changeDetectorRef: ChangeDetectorRef
@@ -16,12 +16,17 @@ export class BarcodeScannerComponent implements AfterViewInit{
   errorMessage: string | undefined;
   started: boolean | undefined;
 
+
+  ngOnInit() {
+
+  }
+
   ngAfterViewInit(): void {
     if (!navigator.mediaDevices || !(typeof navigator.mediaDevices.getUserMedia === 'function')) {
       this.errorMessage = 'getUserMedia is not supported';
+      console.log("TEst");
       return;
     }
-
     this.initializeScanner();
   }
 
@@ -100,36 +105,8 @@ export class BarcodeScannerComponent implements AfterViewInit{
       });
   }
 
-
-  // ngOnInit() {
-  //   Quagga.init({
-  //     inputStream: {
-  //       name: "Live",
-  //       type: "LiveStream",
-  //       // target: document.querySelector('#scannerContainer')    // Or '#yourElement' (optional)
-  //       target: this.scannerContainer.nativeElement
-  //     },
-  //     decoder: {
-  //       readers: ['ean_reader', 'code_128_reader']
-  //     }
-  //   }, (err) => {
-  //     if (err) {
-  //       console.log(err);
-  //       return
-  //     }
-  //     console.log("Initialization finished. Ready to start");
-  //     Quagga.start();
-  //     Quagga.onDetected((res) => {
-  //       console.log(res);
-  //       if (res.codeResult.code) {
-  //         this.onBarcodeScanned(res.codeResult.code);
-  //       }
-  //     });
-  //   });
-  // }
-
   onBarcodeScanned(result: string) {
     console.log(result);
-    // Quagga.stop();
+    Quagga.stop();
   }
 }

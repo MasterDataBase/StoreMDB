@@ -17,7 +17,7 @@
           "name": "Angular Server",
           "commands": [
             "cd Frontend\\StoreMDB",
-            "ng serve"
+            "ng serve --host 0.0.0.0 --disable-host-check"
           ]
         }
       ]

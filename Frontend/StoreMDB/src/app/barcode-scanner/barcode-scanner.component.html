@@ -1,3 +1,5 @@
 <h1>Barcode Scanner</h1>
 <div id="scanner-container"></div>
 <!-- <-- <p>Scanned Barcode: {{ scannedBarcode }}</p> -->
+
+<div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
