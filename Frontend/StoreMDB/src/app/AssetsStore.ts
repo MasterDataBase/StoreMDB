@@ -5,3 +5,7 @@ export interface AssetsStore {
     name: string;
     status: string
 }
+
+export interface BarcodeScannedID {
+    id: string;
+}

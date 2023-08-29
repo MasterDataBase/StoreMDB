@@ -9,7 +9,7 @@ datasource db {
 
 model StoreMDB {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
-  SN       Int
+  SN       String
   category String
   name     String
   status   String

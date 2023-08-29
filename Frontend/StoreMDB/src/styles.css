@@ -43,3 +43,11 @@ h1 {
   * {
     font-family: Arial, Helvetica, sans-serif;
   }
+
+  .disabled
+  {
+    pointer-events: none;
+    /* for "disabled" effect */
+    opacity: 0.5;
+    background: #CCC;
+  }

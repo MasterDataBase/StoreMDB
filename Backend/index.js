@@ -15,7 +15,8 @@ const cors = require('cors');
 app.use(cors());
 
 ///Connect to mongoDB vai prisma
-const { PrismaClient } = require('@prisma/client')
+const { PrismaClient } = require('@prisma/client');
+const { error } = require('console');
 
 const prisma = new PrismaClient()
 
@@ -35,23 +36,42 @@ app.get('/decoder.js', (req, res) => {
 
 app.post('/barcodeScanned', (req, res) => {
   let obj = req.body;
-  console.log(obj);
-  findUser(obj.barcode)
-  .then(result => {
-    console.log(result);
-    res.status(200).type('json').send(result);
-  })
-  .catch(error => {
-    console.error('Error: ', error );
-    res.status(500).send('Internal server error');
-  });
+  console.log("req:", obj.id);
+  if (typeof obj.id != "string") {
+    console.error('Barcode not clear');
+    return;
+  }
+  findUser(obj.id)
+    .then(result => {
+      console.log(result);
+      if(result != null){
+        res.status(200).type('json').send(result).end();
+      }else{
+        res.status(201).type('html').send('Barcode not present in the DB').end();
+        console.error("Item not preset in the database");
+      }
+    })
+    .catch(error => {
+      console.error('Error: ', error);
+      res.status(500).send('Internal server error');
+    });
 });
 
 async function findUser(barcode) {
+  ///Oggetto per definire elemento di default
+  const defaultValue = {id:'0', SN:0, category:'', name:'', status:''};
+  console.log("Inside the query:", barcode);
+
+  ///Query per trovare l'elemento sulla base dell'SN
   try {
-    let obj; 
-    obj = await prisma.storeMDB.findFirst({where: {SN:barcode}});
-    return obj;
+    let obj;
+    obj = await prisma.storeMDB.findFirst({
+      where: {
+        SN: barcode
+      }
+    })
+    ///Ritorna l'oggetto trovato oppure il valore di default
+    return obj || defaultValue;
   } catch (error) {
     console.error(error);
   } finally {

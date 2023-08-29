@@ -7,7 +7,7 @@ import { HEROES } from './mock-heroes';
 import { MessageService } from './message.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AssetsStore } from './AssetsStore';
+import { AssetsStore, BarcodeScannedID } from './AssetsStore';
 
 @Injectable({ providedIn: 'root' })
 export class HeroService {
@@ -29,6 +29,10 @@ export class HeroService {
   TestConnection(): Observable<AssetsStore> {
     // return this.http.get<AssetsStore>(this.localproduction + '\\barcodeScanned');
     return this.http.post<AssetsStore>(this.localproduction + '\\barcodeScanned', JSON.stringify(this.stringTest));
+  }
+
+  SearchBarcodeScanned(barcode: any): Observable<AssetsStore> {
+    return this.http.post<AssetsStore>(this.localproduction + '\\barcodeScanned', barcode);
   }
 
 getHeroes(): Observable < Hero[] > {

@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import Quagga from '@ericblade/quagga2';
 import { getMainBarcodeScanningCamera } from '../camera-access';
+import { HeroService } from '../hero.service';
+import { Hero } from '../hero';
+import { AssetsStore, BarcodeScannedID } from '../AssetsStore';
 
 @Component({
   selector: 'app-barcode-scanner',
@@ -10,21 +13,24 @@ import { getMainBarcodeScanningCamera } from '../camera-access';
 export class BarcodeScannerComponent implements AfterViewInit {
   constructor(
     private scannerContainer: ElementRef,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private heroService: HeroService
   ) { }
 
+  assetOnDB: AssetsStore = { id: '0', SN: 0, category: '', name: '', status: '' };
+  isEnabledCamera: boolean = true;
   errorMessage: string | undefined;
   started: boolean | undefined;
-
+  barcode: BarcodeScannedID = { id: '' };
+  resultScanned: AssetsStore | undefined;
 
   ngOnInit() {
-
+    this.isEnabledCamera = true;
   }
 
   ngAfterViewInit(): void {
     if (!navigator.mediaDevices || !(typeof navigator.mediaDevices.getUserMedia === 'function')) {
       this.errorMessage = 'getUserMedia is not supported';
-      console.log("TEst");
       return;
     }
     this.initializeScanner();
@@ -106,7 +112,28 @@ export class BarcodeScannerComponent implements AfterViewInit {
   }
 
   onBarcodeScanned(result: string) {
-    console.log(result);
+    console.log("Scanned: ", result);
     Quagga.stop();
+    this.barcode.id = result;
+    this.heroService.SearchBarcodeScanned(this.barcode).subscribe(
+      // resp => this.assetOnDB = resp
+      (resp) =>{
+        if(resp.id != '0'){
+          this.assetOnDB = resp;
+        }else{
+          this.assetOnDB = { id: '0', SN: parseInt(this.barcode.id), category: '', name: '', status: '' };
+        }
+      }
+    );
+    this.isEnabledCamera = false;
+  }
+  
+  NewScan(){
+    this.isEnabledCamera = true;
+    this.initializeScanner();
+  }
+
+  CreateNewAsset(){
+    console.log(this.barcode.id);
   }
 }
