@@ -83,14 +83,14 @@ async function findUser(barcode) {
 app.post('/createNewAsset', (req, res) => {
   let obj = req.body;
   console.log("req:", obj);
-  if (obj.id == '0') {
-    console.log('ID should have value 0');
-    res.status(500).type('html').send('ID should have value 0').end();
-    return;
-  } else {
+  if (obj.id == '0' || obj.id == null) {
     createNewAsset(obj).then(
       res.status(200).type('json').send(obj).end()
     )
+  } else {
+    console.log('ID should have value 0');
+    res.status(500).type('html').send('ID should have value 0').end();
+    return;    
   }
 });
 

@@ -1,10 +1,14 @@
 <div>
     <h1>Barcode Scanner</h1>
 
+    <div *ngIf="awaitData">
+        <p>Waiting information...</p>
+    </div>
+
     <!-- *ngIf per nascondere la camera se il barcode è stato scannerizzato -->
     <div id="scanner-container" *ngIf="isEnabledCamera"></div>
 
-    <div class="assetOnDB" *ngIf="!isEnabledCamera">
+    <div class="assetOnDB" *ngIf="!isEnabledCamera && !awaitData">
         <div *ngIf="assetOnDB.id != '0'">
             <ul>
                 <li>{{assetOnDB.id}}</li>
@@ -21,7 +25,7 @@
             <button type="button" (click)="CreateNewAsset()">Create new element</button>
         </div>
     </div>
-    <button type="button" (click)="NewScan()" *ngIf="!isEnabledCamera">New Scan</button>
+    <button type="button" (click)="NewScan()" *ngIf="!isEnabledCamera && !awaitData">New Scan</button>
     
     <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
 </div>

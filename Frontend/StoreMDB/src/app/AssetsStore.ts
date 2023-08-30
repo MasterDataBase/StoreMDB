@@ -1,6 +1,6 @@
 export interface AssetsStore {
     id: string;
-    SN: number
+    SN: string;
     category: string;
     name: string;
     status: string
@@ -10,7 +10,7 @@ export interface AssetsStore {
 export class AssetsStore{
     constructor(
         public id: string,
-        public SN: number,
+        public SN: string,
         public category: string,
         public name: string,
         public status: string

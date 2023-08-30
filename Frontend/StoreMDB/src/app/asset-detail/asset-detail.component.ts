@@ -14,9 +14,9 @@ import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } 
   styleUrls: ['./asset-detail.component.css']
 })
 export class AssetDetailComponent implements OnInit {
-  recivedBarcode: Number | undefined;
+  recivedBarcode = '0';
 
-  currentAsset = new AssetsStore('0', 0, '', '', '');
+  currentAsset = new AssetsStore('0', '0', '', '', '');
 
   assetForm: FormGroup = new FormGroup({
     SN: new FormControl(),
@@ -48,7 +48,7 @@ export class AssetDetailComponent implements OnInit {
     this.heroService.selectedProduct$.subscribe((value) => {
       this.recivedBarcode = value;
       console.log(this.recivedBarcode);
-      this.currentAsset.SN = Number(this.recivedBarcode);
+      this.currentAsset.SN = this.recivedBarcode;
     });
 
 

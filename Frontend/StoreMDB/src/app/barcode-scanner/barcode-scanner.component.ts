@@ -19,12 +19,13 @@ export class BarcodeScannerComponent implements AfterViewInit {
     private router: Router
   ) { }
 
-  assetOnDB: AssetsStore = { id: '0', SN: 0, category: '', name: '', status: '' };
+  assetOnDB: AssetsStore = { id: '0', SN: '0', category: '', name: '', status: '' };
   isEnabledCamera: boolean = true;
   errorMessage: string | undefined;
   started: boolean | undefined;
   barcode: BarcodeScannedID = { id: '' };
   resultScanned: AssetsStore | undefined;
+  awaitData = false;
 
   ngOnInit() {
     this.isEnabledCamera = true;
@@ -106,6 +107,11 @@ export class BarcodeScannerComponent implements AfterViewInit {
           this.changeDetectorRef.detectChanges();
           Quagga.onDetected((res) => {
             if (res.codeResult.code) {
+              Quagga.stop();
+              Quagga.offDetected();
+              this.started = false;
+              this.awaitData = true;
+              this.isEnabledCamera = false;
               this.onBarcodeScanned(res.codeResult.code);
             }
           });
@@ -115,19 +121,20 @@ export class BarcodeScannerComponent implements AfterViewInit {
 
   onBarcodeScanned(result: string) {
     console.log("Scanned: ", result);
-    Quagga.stop();
+    // Quagga.stop();
     this.barcode.id = result;
     this.heroService.SearchBarcodeScanned(this.barcode).subscribe(
       // resp => this.assetOnDB = resp
       (resp) =>{
+        this.awaitData = false;
         if(resp.id != '0'){
           this.assetOnDB = resp;
         }else{
-          this.assetOnDB = { id: '0', SN: parseInt(this.barcode.id), category: '', name: '', status: '' };
+          this.assetOnDB = { id: '0', SN: this.barcode.id, category: '', name: '', status: '' };
         }
       }
     );
-    this.isEnabledCamera = false;
+    
   }
 
   NewScan(){
