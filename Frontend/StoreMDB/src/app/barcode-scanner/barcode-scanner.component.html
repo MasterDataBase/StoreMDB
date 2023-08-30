@@ -3,19 +3,25 @@
 
     <!-- *ngIf per nascondere la camera se il barcode è stato scannerizzato -->
     <div id="scanner-container" *ngIf="isEnabledCamera"></div>
-    <!-- <-- <p>Scanned Barcode: {{ scannedBarcode }}</p> -->
 
     <div class="assetOnDB" *ngIf="!isEnabledCamera">
-        <ul *ngIf="assetOnDB">
-            <li>{{assetOnDB.id}}</li>
-            <li>{{assetOnDB.SN}}</li>
-            <li>{{assetOnDB.category}}</li>
-            <li>{{assetOnDB.name}}</li>
-            <li>{{assetOnDB.status}}</li>
-        </ul>
-        
+        <div *ngIf="assetOnDB.id != '0'">
+            <ul>
+                <li>{{assetOnDB.id}}</li>
+                <li>{{assetOnDB.SN}}</li>
+                <li>{{assetOnDB.category}}</li>
+                <li>{{assetOnDB.name}}</li>
+                <li>{{assetOnDB.status}}</li>
+            </ul>
+        </div>
+        <div  *ngIf="assetOnDB.id == '0'">
+            <h3>New barcode scanned</h3>
+            <p>If this is a new Item, please create the referance</p>
+            <P>If the item is an existing one, please take another scan</P>
+            <button type="button" (click)="CreateNewAsset()">Create new element</button>
+        </div>
     </div>
     <button type="button" (click)="NewScan()" *ngIf="!isEnabledCamera">New Scan</button>
-    <button type="button" (click)="CreateNewAsset()" *ngIf="!isEnabledCamera">Create new element</button>
+    
     <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
 </div>

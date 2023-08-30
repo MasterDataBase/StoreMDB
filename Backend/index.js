@@ -79,6 +79,10 @@ async function findUser(barcode) {
   }
 }
 
+///Create new asset
+app.post('/createNewAsset', (req, res) => {
+});
+
 const server = app.listen(8080, () => {
   console.log('Server is running on port 8080');
 });

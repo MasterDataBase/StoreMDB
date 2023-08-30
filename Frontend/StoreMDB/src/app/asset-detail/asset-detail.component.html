@@ -1,0 +1,17 @@
+<div>
+<h2>Create new Asset</h2>
+    <div class="form-group">
+        <label>Asset details</label>
+        <br>
+        <label>Name</label>
+        <input type="text" class="form-control" id="name" required [(ngModel)]="currentAsset.name" name="name">
+        <label>Category</label>
+        <input type="text" class="form-control" id="category" required [(ngModel)]="currentAsset.category" name="category">
+        <label>Status</label>
+        <input type="text" class="form-control" id="status" required [(ngModel)]="currentAsset.status" name="status">        
+        <label>SN</label>
+        <input type="Number" class="form-control" id="SN" required [(ngModel)]="currentAsset.SN" name="SN">
+    </div>
+    <br>
+    <button type="button" routerLink="/barcode-scanner">back to scanner</button>
+</div>

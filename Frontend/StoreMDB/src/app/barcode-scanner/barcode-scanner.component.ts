@@ -4,6 +4,7 @@ import { getMainBarcodeScanningCamera } from '../camera-access';
 import { HeroService } from '../hero.service';
 import { Hero } from '../hero';
 import { AssetsStore, BarcodeScannedID } from '../AssetsStore';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-barcode-scanner',
@@ -14,7 +15,8 @@ export class BarcodeScannerComponent implements AfterViewInit {
   constructor(
     private scannerContainer: ElementRef,
     private changeDetectorRef: ChangeDetectorRef,
-    private heroService: HeroService
+    private heroService: HeroService,
+    private router: Router
   ) { }
 
   assetOnDB: AssetsStore = { id: '0', SN: 0, category: '', name: '', status: '' };
@@ -127,13 +129,14 @@ export class BarcodeScannerComponent implements AfterViewInit {
     );
     this.isEnabledCamera = false;
   }
-  
+
   NewScan(){
     this.isEnabledCamera = true;
     this.initializeScanner();
   }
 
   CreateNewAsset(){
-    console.log(this.barcode.id);
+    const data = this.barcode.id;
+    this.router.navigate(['/asset-detail', data]);
   }
 }
