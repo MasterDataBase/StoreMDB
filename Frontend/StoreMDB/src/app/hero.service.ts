@@ -9,8 +9,20 @@ import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AssetsStore, BarcodeScannedID } from './AssetsStore';
 
+import { BehaviorSubject } from 'rxjs';
+
 @Injectable({ providedIn: 'root' })
 export class HeroService {
+
+  ///Share data as service
+  //#region sharing
+  private product$ = new BehaviorSubject<any>({});
+  selectedProduct$ = this.product$.asObservable();
+
+  setProduct(product: any){
+    this.product$.next(product);
+  }
+  //#endregion
 
   /** Log a HeroService message with the MessageService */
   private log(message: string) {

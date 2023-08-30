@@ -13,7 +13,7 @@ const routes: Routes = [
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'detail/:id', component: HeroDetailComponent },
   { path: 'barcode-scanner', component: BarcodeScannerComponent},
-  { path: 'asset-detail/:id', component: AssetDetailComponent},
+  { path: 'asset-detail', component: AssetDetailComponent},
   { path: '', redirectTo: '/barcode-scanner', pathMatch: 'full' },
 ];
 

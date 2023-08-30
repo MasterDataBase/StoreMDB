@@ -137,6 +137,7 @@ export class BarcodeScannerComponent implements AfterViewInit {
 
   CreateNewAsset(){
     const data = this.barcode.id;
-    this.router.navigate(['/asset-detail', data]);
+    this.router.navigate(['/asset-detail']);
+    this.heroService.setProduct(data);
   }
 }
