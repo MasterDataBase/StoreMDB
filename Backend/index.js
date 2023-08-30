@@ -44,9 +44,9 @@ app.post('/barcodeScanned', (req, res) => {
   findUser(obj.id)
     .then(result => {
       console.log(result);
-      if(result != null){
+      if (result != null) {
         res.status(200).type('json').send(result).end();
-      }else{
+      } else {
         res.status(201).type('html').send('Barcode not present in the DB').end();
         console.error("Item not preset in the database");
       }
@@ -59,7 +59,7 @@ app.post('/barcodeScanned', (req, res) => {
 
 async function findUser(barcode) {
   ///Oggetto per definire elemento di default
-  const defaultValue = {id:'0', SN:0, category:'', name:'', status:''};
+  const defaultValue = { id: '0', SN: 0, category: '', name: '', status: '' };
   console.log("Inside the query:", barcode);
 
   ///Query per trovare l'elemento sulla base dell'SN
@@ -81,7 +81,36 @@ async function findUser(barcode) {
 
 ///Create new asset
 app.post('/createNewAsset', (req, res) => {
+  let obj = req.body;
+  console.log("req:", obj);
+  if (obj.id == '0') {
+    console.log('ID should have value 0');
+    res.status(500).type('html').send('ID should have value 0').end();
+    return;
+  } else {
+    createNewAsset(obj).then(
+      res.status(200).type('json').send(obj).end()
+    )
+  }
 });
+
+async function createNewAsset(newAsset){
+  try {
+    let obj;
+    obj = await prisma.storeMDB.create({
+      data: {
+        SN: newAsset.SN,
+        category: newAsset.category,
+        name: newAsset.name,
+        status: newAsset.status,
+      }
+    });
+  }catch (error){
+    console.log(error);
+  }finally{
+    await prisma.$disconnect();
+  }
+}
 
 const server = app.listen(8080, () => {
   console.log('Server is running on port 8080');

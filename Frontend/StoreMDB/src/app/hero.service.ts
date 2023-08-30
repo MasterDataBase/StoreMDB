@@ -47,6 +47,10 @@ export class HeroService {
     return this.http.post<AssetsStore>(this.localproduction + '\\barcodeScanned', barcode);
   }
 
+  CreateNewAssetHTTP(assetStore: any): Observable<AssetsStore>{
+    return this.http.post<AssetsStore>(this.localproduction + '\\createNewAsset', assetStore);
+  }
+
 getHeroes(): Observable < Hero[] > {
   const heroes = of(HEROES);
   this.messageService.add('HeroService: fetched heroes');
