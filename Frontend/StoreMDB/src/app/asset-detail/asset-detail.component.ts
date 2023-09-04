@@ -7,6 +7,7 @@ import Integer from '@zxing/library/esm/core/util/Integer';
 import { ActivatedRoute } from '@angular/router';
 import { HeroService } from '../hero.service';
 import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { isNull } from 'util';
 
 @Component({
   selector: 'app-asset-detail',
@@ -15,7 +16,8 @@ import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } 
 })
 export class AssetDetailComponent implements OnInit {
   recivedBarcode = '0';
-
+  ///If false disable the input form.
+  createdAsset = false;
   currentAsset = new AssetsStore('0', '0', '', '', '');
 
   assetForm: FormGroup = new FormGroup({
@@ -32,11 +34,6 @@ export class AssetDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.route.paramMap.subscribe(params => {
-    //   this.recivedBarcode = Number(params.get('data'))
-    //   console.log(this.recivedBarcode);
-    // });
-
     this.assetForm = this.formBuilder.group({
       SN: ['', Validators.required],
       category: ['', Validators.required],
@@ -44,14 +41,11 @@ export class AssetDetailComponent implements OnInit {
       status: ['', Validators.required]
     });
 
-
     this.heroService.selectedProduct$.subscribe((value) => {
       this.recivedBarcode = value;
       console.log(this.recivedBarcode);
       this.currentAsset.SN = this.recivedBarcode;
     });
-
-
   }
 
 
@@ -68,7 +62,10 @@ export class AssetDetailComponent implements OnInit {
 
       this.heroService.CreateNewAssetHTTP(this.currentAsset).subscribe(
         (resp) => {
-          console.log(resp);
+          if(resp.id != null){
+            this.createdAsset = true;
+            console.log(resp.id);
+          }
         }
       )
 

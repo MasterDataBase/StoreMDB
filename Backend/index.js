@@ -84,17 +84,23 @@ app.post('/createNewAsset', (req, res) => {
   let obj = req.body;
   console.log("req:", obj);
   if (obj.id == '0' || obj.id == null) {
-    createNewAsset(obj).then(
-      res.status(200).type('json').send(obj).end()
-    )
+    try {
+      createNewAsset(obj).then(result => {
+        res.status(200).type('json').send(result).end();
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(201).type('json').send(error).end();
+      return;
+    }
   } else {
     console.log('ID should have value 0');
     res.status(500).type('html').send('ID should have value 0').end();
-    return;    
+    return;
   }
 });
 
-async function createNewAsset(newAsset){
+async function createNewAsset(newAsset) {
   try {
     let obj;
     obj = await prisma.storeMDB.create({
@@ -105,9 +111,10 @@ async function createNewAsset(newAsset){
         status: newAsset.status,
       }
     });
-  }catch (error){
+    return obj;
+  } catch (error) {
     console.log(error);
-  }finally{
+  } finally {
     await prisma.$disconnect();
   }
 }

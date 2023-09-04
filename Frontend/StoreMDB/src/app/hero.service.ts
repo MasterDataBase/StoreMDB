@@ -10,6 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AssetsStore, BarcodeScannedID } from './AssetsStore';
 
 import { BehaviorSubject } from 'rxjs';
+import { AssertionError } from 'assert';
 
 @Injectable({ providedIn: 'root' })
 export class HeroService {
@@ -63,5 +64,19 @@ getHero(id: number): Observable < Hero > {
   const hero = HEROES.find(h => h.id === id)!;
   this.messageService.add(`HeroService: fetched hero id=${id}`);
   return of(hero);
+}
+
+private listAsset: AssetsStore[] = [];
+
+SetData(data: AssetsStore[]): void{
+  this.listAsset = data;
+}
+
+GetListAsset(): AssetsStore[]{
+  return this.listAsset;
+}
+
+AddAssetToList(data: AssetsStore){
+  this.listAsset.push(data);
 }
 }

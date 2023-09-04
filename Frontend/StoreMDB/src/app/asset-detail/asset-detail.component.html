@@ -1,6 +1,6 @@
 <div>
     <h2>Create new Asset</h2>
-    <div>
+    <div *ngIf="!createdAsset">
         <form [formGroup]="assetForm" (ngSubmit)="CreateNewAsset">
             <div class="form-group">
                 <label>Asset details</label>
@@ -21,6 +21,7 @@
             </div>
         </form>
     </div>
+    <div *ngIf="createdAsset">New asset created</div>
     <br>
     <button type="button" routerLink="/barcode-scanner">back to scanner</button>
 </div>

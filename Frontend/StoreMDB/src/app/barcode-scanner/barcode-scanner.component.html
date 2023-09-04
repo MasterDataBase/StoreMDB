@@ -6,7 +6,17 @@
     </div>
 
     <!-- *ngIf per nascondere la camera se il barcode è stato scannerizzato -->
-    <div id="scanner-container" *ngIf="isEnabledCamera"></div>
+    <div *ngIf="isEnabledCamera">
+        <span class="form-group">
+            <select [(ngModel)]="decoderSelected" (change)="onDecoderOptionChange()">
+                <option value="ean_reader">ean_reader</option>
+                <option value="code_128_reader">code_128_reader</option>
+            </select>
+        </span>
+        <br>
+        <br>
+        <span id="scanner-container"></span>
+    </div>
 
     <div class="assetOnDB" *ngIf="!isEnabledCamera && !awaitData">
         <div *ngIf="assetOnDB.id != '0'">
@@ -18,7 +28,7 @@
                 <li>{{assetOnDB.status}}</li>
             </ul>
         </div>
-        <div  *ngIf="assetOnDB.id == '0'">
+        <div *ngIf="assetOnDB.id == '0'">
             <h3>New barcode scanned</h3>
             <p>If this is a new Item, please create the referance</p>
             <P>If the item is an existing one, please take another scan</P>
@@ -26,6 +36,6 @@
         </div>
     </div>
     <button type="button" (click)="NewScan()" *ngIf="!isEnabledCamera && !awaitData">New Scan</button>
-    
+
     <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
 </div>

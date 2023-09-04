@@ -1,8 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
-import Quagga from '@ericblade/quagga2';
+import Quagga, { QuaggaJSCodeReader, QuaggaJSConfigObject, QuaggaJSReaderConfig } from '@ericblade/quagga2';
 import { getMainBarcodeScanningCamera } from '../camera-access';
 import { HeroService } from '../hero.service';
-import { Hero } from '../hero';
 import { AssetsStore, BarcodeScannedID } from '../AssetsStore';
 import { Router } from '@angular/router';
 
@@ -26,6 +25,14 @@ export class BarcodeScannerComponent implements AfterViewInit {
   barcode: BarcodeScannedID = { id: '' };
   resultScanned: AssetsStore | undefined;
   awaitData = false;
+
+  decoderOptions: string[] = ['ean_reader', 'code_128_reader'];
+  decoderSelected: string = this.decoderOptions[0]; 
+
+  onDecoderOptionChange(){
+    console.log(this.decoderSelected);
+    Quagga.setReaders([this.decoderSelected]);
+  }
 
   ngOnInit() {
     this.isEnabledCamera = true;
@@ -52,10 +59,10 @@ export class BarcodeScannerComponent implements AfterViewInit {
         const mainCamera = getMainBarcodeScanningCamera(mediaDeviceInfos);
         if (mainCamera) {
           console.log(`Using ${mainCamera.label} (${mainCamera.deviceId}) as initial camera`);
-          return this.initializeScannerWithDevice(mainCamera.deviceId);
+          return this.initializeScannerWithDevice(mainCamera.deviceId, this.decoderSelected);
         } else {
           console.error(`Unable to determine suitable camera, will fall back to default handling`);
-          return this.initializeScannerWithDevice(undefined);
+          return this.initializeScannerWithDevice(undefined, this.decoderSelected);
         }
       })
       .catch(error => {
@@ -64,7 +71,7 @@ export class BarcodeScannerComponent implements AfterViewInit {
       });
   }
 
-  private initializeScannerWithDevice(preferredDeviceId: string | undefined): Promise<void> {
+  private initializeScannerWithDevice(preferredDeviceId: string | undefined, value:any): Promise<void> {
     console.log(`Initializing Quagga scanner...`);
 
     const constraints: MediaTrackConstraints = {};
@@ -89,6 +96,7 @@ export class BarcodeScannerComponent implements AfterViewInit {
         target: document.querySelector('#scanner-container') ?? undefined
       },
       decoder: {
+        // readers: [this.configReader],
         readers: ['ean_reader'],
         multiple: false
       },
@@ -109,7 +117,7 @@ export class BarcodeScannerComponent implements AfterViewInit {
             if (res.codeResult.code) {
               Quagga.stop();
               Quagga.offDetected();
-              this.started = false;
+              // this.started = false;
               this.awaitData = true;
               this.isEnabledCamera = false;
               this.onBarcodeScanned(res.codeResult.code);
@@ -148,3 +156,4 @@ export class BarcodeScannerComponent implements AfterViewInit {
     this.heroService.setProduct(data);
   }
 }
+
