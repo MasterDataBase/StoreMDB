@@ -20,3 +20,12 @@ export class AssetsStore{
 export interface BarcodeScannedID {
     id: string;
 }
+
+export class AssetInList{
+    constructor(
+        public asset: AssetsStore,
+        public index: number,
+        public kit: string,
+        public note: string
+    ){}
+}

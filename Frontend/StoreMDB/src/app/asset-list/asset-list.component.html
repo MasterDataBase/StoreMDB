@@ -8,12 +8,12 @@
             <th>Status</th>
         </thead>
         <tbody>
-            <tr *ngFor="let asset of assetsList; let i = index">
-                <td>{{i}}</td>
-                <td>{{asset.SN}}</td>
-                <td>{{asset.name}}</td>
-                <td>{{asset.category}}</td>
-                <td>{{asset.status}}</td>
+            <tr *ngFor="let elm of assetsList; let i = index">
+                <td>{{elm.index}}</td>
+                <td>{{elm.asset.SN}}</td>
+                <td>{{elm.asset.name}}</td>
+                <td>{{elm.kit}}</td>
+                <td>{{elm.note}}</td>
             </tr>
         </tbody>
     </table>

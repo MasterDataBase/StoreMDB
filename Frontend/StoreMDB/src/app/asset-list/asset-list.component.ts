@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AssetsStore } from '../AssetsStore';
+import { AssetInList, AssetsStore } from '../AssetsStore';
 import { HeroService } from '../hero.service';
 
 @Component({
@@ -15,10 +15,14 @@ export class AssetListComponent implements OnInit {
     private heroService: HeroService
   ) { }
 
-    assetsList: AssetsStore[] = this.heroService.GetListAsset();
+    assetsList: AssetInList[] = [];
 
   ngOnInit(): void {
-    // this.assetsList = this.heroService.GetListAsset();
+    let assetToShow = this.heroService.GetListAsset();
+    for (let i = 0; i < assetToShow.length; i++) {
+      const element = assetToShow[i];
+      this.assetsList.push({asset:element, index: i+1, kit:"", note:""});
+    }
   }
 
   NewScan() {
