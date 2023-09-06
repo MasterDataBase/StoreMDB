@@ -35,7 +35,13 @@
             <button type="button" (click)="CreateNewAsset()">Create new element</button>
         </div>
     </div>
-    <button type="button" (click)="NewScan()" *ngIf="!isEnabledCamera && !awaitData">New Scan</button>
+
+    <div *ngIf="!isEnabledCamera && !awaitData">
+        <p>If this not the asset are you looking for, make a new scan, and try to change the reader type</p>
+        <button type="button" (click)="NewScan()">New Scan</button>
+        <p>Add this asset to the shipment list</p>
+        <button type="button" (click)="AddAsset(assetOnDB)">Add asset</button>
+    </div>
 
     <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
 </div>

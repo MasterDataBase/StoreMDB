@@ -155,5 +155,12 @@ export class BarcodeScannerComponent implements AfterViewInit {
     this.router.navigate(['/asset-detail']);
     this.heroService.setProduct(data);
   }
+
+  AddAsset(assetToAdd: AssetsStore): void{
+    console.log(assetToAdd);
+    this.heroService.AddAssetToList(assetToAdd);
+    console.log(this.heroService.GetListAsset());
+    this.router.navigate(['/asset-list']);
+  }
 }
 

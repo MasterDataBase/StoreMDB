@@ -13,6 +13,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.component';
 import { AssetDetailComponent } from './asset-detail/asset-detail.component';
+import { AssetListComponent } from './asset-list/asset-list.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AssetDetailComponent } from './asset-detail/asset-detail.component';
     DashboardComponent,
     BarcodeScannerComponent,
     AssetDetailComponent,
+    AssetListComponent,
   ],
   imports: [
     BrowserModule,

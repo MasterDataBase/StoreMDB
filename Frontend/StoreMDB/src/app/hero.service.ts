@@ -15,12 +15,14 @@ import { AssertionError } from 'assert';
 @Injectable({ providedIn: 'root' })
 export class HeroService {
 
+  // private listAsset: AssetsStore[] = [{id:"",SN:"",name:"",category:"",status:""}];
+
   ///Share data as service
   //#region sharing
   private product$ = new BehaviorSubject<any>({});
   selectedProduct$ = this.product$.asObservable();
 
-  setProduct(product: any){
+  setProduct(product: any) {
     this.product$.next(product);
   }
   //#endregion
@@ -48,35 +50,35 @@ export class HeroService {
     return this.http.post<AssetsStore>(this.localproduction + '\\barcodeScanned', barcode);
   }
 
-  CreateNewAssetHTTP(assetStore: any): Observable<AssetsStore>{
+  CreateNewAssetHTTP(assetStore: any): Observable<AssetsStore> {
     return this.http.post<AssetsStore>(this.localproduction + '\\createNewAsset', assetStore);
   }
 
-getHeroes(): Observable < Hero[] > {
-  const heroes = of(HEROES);
-  this.messageService.add('HeroService: fetched heroes');
-  return heroes;
-}
+  getHeroes(): Observable<Hero[]> {
+    const heroes = of(HEROES);
+    this.messageService.add('HeroService: fetched heroes');
+    return heroes;
+  }
 
-getHero(id: number): Observable < Hero > {
-  // For now, assume that a hero with the specified `id` always exists.
-  // Error handling will be added in the next step of the tutorial.
-  const hero = HEROES.find(h => h.id === id)!;
-  this.messageService.add(`HeroService: fetched hero id=${id}`);
-  return of(hero);
-}
+  getHero(id: number): Observable<Hero> {
+    // For now, assume that a hero with the specified `id` always exists.
+    // Error handling will be added in the next step of the tutorial.
+    const hero = HEROES.find(h => h.id === id)!;
+    this.messageService.add(`HeroService: fetched hero id=${id}`);
+    return of(hero);
+  }
 
-private listAsset: AssetsStore[] = [];
+  private listAsset: AssetsStore[] = [];
 
-SetData(data: AssetsStore[]): void{
-  this.listAsset = data;
-}
+  SetData(data: AssetsStore[]): void {
+    this.listAsset = data;
+  }
 
-GetListAsset(): AssetsStore[]{
-  return this.listAsset;
-}
+  GetListAsset(): AssetsStore[] {
+    return this.listAsset;
+  }
 
-AddAssetToList(data: AssetsStore){
-  this.listAsset.push(data);
-}
+  AddAssetToList(data: AssetsStore) {
+    this.listAsset.push(data);
+  }
 }

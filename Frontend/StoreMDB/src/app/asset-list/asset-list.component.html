@@ -1,0 +1,21 @@
+<div>
+    <table>
+        <thead>
+            <th>Index</th>
+            <th>SN</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Status</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let asset of assetsList; let i = index">
+                <td>{{i}}</td>
+                <td>{{asset.SN}}</td>
+                <td>{{asset.name}}</td>
+                <td>{{asset.category}}</td>
+                <td>{{asset.status}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" (click)="NewScan()">New Scan</button>
+</div>

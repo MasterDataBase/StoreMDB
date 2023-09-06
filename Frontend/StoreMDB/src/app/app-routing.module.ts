@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeroDetailComponent } from './hero-detail/hero-detail.component';
 import { BarcodeScannerComponent } from './barcode-scanner/barcode-scanner.component';
 import { AssetDetailComponent } from './asset-detail/asset-detail.component';
+import { AssetListComponent } from './asset-list/asset-list.component';
 
 const routes: Routes = [
   { path: 'heroes', component: HeroesComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'detail/:id', component: HeroDetailComponent },
   { path: 'barcode-scanner', component: BarcodeScannerComponent},
   { path: 'asset-detail', component: AssetDetailComponent},
+  { path: 'asset-list', component: AssetListComponent},
   { path: '', redirectTo: '/barcode-scanner', pathMatch: 'full' },
 ];
 
