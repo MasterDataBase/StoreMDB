@@ -56,10 +56,10 @@ export class AssetListComponent implements OnInit {
           table: {
             headerRows: 1,
             // body: this.CreateBody(this.assetsList, ["index", "asset.SN"])
-            widths: ['*','*'],
+            widths: ['*','*', '*', '*', '*'],
             body:
               // [{text:'Col 1', fillColor: 'red'}, {text:'Col 2'}]
-              this.CreateBody(this.assetsList, ["index", "asset.SN"])
+              this.CreateBody(this.assetsList, ["index", "asset.name", "asset.SN", "kit", "note"])
           }
         }
       ]
@@ -78,37 +78,32 @@ export class AssetListComponent implements OnInit {
 
     // // bodyF.push(head);
 
-    for (let index = 0; index < 100; index++) {
-      bodyF.push([index, 'SN-${i}']);
-    }
+    ///For debug propouse
+    // for (let index = 0; index < 1; index++) {
+    //   bodyF.push([index, 'SN-${i}']);
+    // }
 
-    // bodyF.push(columns);
+    bodyF.push([{text: "Index"}, {text: "Prodotto/Descrizione"}, {text:"B/C"}, {text:"Kit"}, {text:"Note"}]);
 
     rows.forEach((row) =>{
       var dataRow: { text: any; }[] = [];
       columns.forEach((column) =>{
         var val = this.KeyFind(row,column);
-        console.log("val: ", val);
         dataRow.push({text: val});
       });
       bodyF.push(dataRow);
     });
 
-    // console.log("Data stored: ", JSON.stringify(data));
-    // console.log("Head stored: ", JSON.stringify(head));
-    // bodyF.push(data);
-    console.log("Body: ", bodyF);
-
     return bodyF;
   }
 
+  ///Method necessario per trovare il field S in un oggetto O
   KeyFind(o: any , s: any): any {
     s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
     s = s.replace(/^\./, '');           // strip a leading dot
     var a = s.split('.');
     for (var i = 0, n = a.length; i < n; ++i) {
         var k = a[i];
-        console.log("a[i]: ",a[i])
         if (k in o) {
             o = o[k];
         } else {
