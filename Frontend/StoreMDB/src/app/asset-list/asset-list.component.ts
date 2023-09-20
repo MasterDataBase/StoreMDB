@@ -50,19 +50,53 @@ export class AssetListComponent implements OnInit {
 
     var dd = {
       content: [
-        { text: 'Bolla di carico del Faggiua!' },
+        // {
+        //   image: "testimage",
+        //   width: 150,
+        //   height: 150
+        // },
+        // { text: 'Bolla di carico del Faggiua!', margin: [0,20] },
+
+        {
+          alignment: 'justify',
+          columns: [
+            {
+              image: "testimage",
+              width: 250,
+              height: 150
+            },
+            { 
+              text: 'ATLANTIS FILM & VIDEO S.R.L. \n\nVia Bordighera 15, 20143 Milano – Italia \n\nTel: +39 02 32001 – Email: info@atlantisfilm.it \n\nSito web: www.atlantisfilm.it \n\nP.IVA e C.F. IT12045820151'
+            }
+          ]
+        },
         {
           layout: 'lightHorizontalLines', // optional
+          style: 'tableExample',
           table: {
             headerRows: 1,
             // body: this.CreateBody(this.assetsList, ["index", "asset.SN"])
-            widths: ['*','*', '*', '*', '*'],
+            widths: ['*', '*', '*', '*', '*'],
             body:
               // [{text:'Col 1', fillColor: 'red'}, {text:'Col 2'}]
               this.CreateBody(this.assetsList, ["index", "asset.name", "asset.SN", "kit", "note"])
           }
         }
-      ]
+      ],
+      styles: {
+        tableHeader: {
+          bold: true,
+          fontSize: 13,
+          color: 'black'
+        },
+        tableExample: {
+          margin: [0, 5, 0, 15]
+        },
+      },
+      defaultStyle: {},
+      images: {
+        testimage: "http://localhost:8080/images/Bullet.jpg"
+      }
     };
 
     const pdfDocGenerator = pdfMake.createPdf(dd);
@@ -83,13 +117,19 @@ export class AssetListComponent implements OnInit {
     //   bodyF.push([index, 'SN-${i}']);
     // }
 
-    bodyF.push([{text: "Index"}, {text: "Prodotto/Descrizione"}, {text:"B/C"}, {text:"Kit"}, {text:"Note"}]);
+    bodyF.push([
+      { text: "Index", style: "tableHeader" },
+      { text: "Prodotto/Descrizione", style: "tableHeader" },
+      { text: "B/C", style: "tableHeader" },
+      { text: "Kit", style: "tableHeader" },
+      { text: "Note", style: "tableHeader" }
+    ]);
 
-    rows.forEach((row) =>{
+    rows.forEach((row) => {
       var dataRow: { text: any; }[] = [];
-      columns.forEach((column) =>{
-        var val = this.KeyFind(row,column);
-        dataRow.push({text: val});
+      columns.forEach((column) => {
+        var val = this.KeyFind(row, column);
+        dataRow.push({ text: val });
       });
       bodyF.push(dataRow);
     });
@@ -98,17 +138,17 @@ export class AssetListComponent implements OnInit {
   }
 
   ///Method necessario per trovare il field S in un oggetto O
-  KeyFind(o: any , s: any): any {
+  KeyFind(o: any, s: any): any {
     s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
     s = s.replace(/^\./, '');           // strip a leading dot
     var a = s.split('.');
     for (var i = 0, n = a.length; i < n; ++i) {
-        var k = a[i];
-        if (k in o) {
-            o = o[k];
-        } else {
-            return;
-        }
+      var k = a[i];
+      if (k in o) {
+        o = o[k];
+      } else {
+        return;
+      }
     }
     return o;
   }

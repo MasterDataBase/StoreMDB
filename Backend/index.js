@@ -117,7 +117,25 @@ async function createNewAsset(newAsset) {
   } finally {
     await prisma.$disconnect();
   }
-}
+};
+
+const imageDirectory = path.join(__dirname, "public/grapichs");
+
+app.get('/images/:imageName', (req, res) => {
+  const imageName = req.params.imageName;
+  const imagePath = path.join(imageDirectory, imageName);
+
+  if(fs.existsSync(imagePath)){
+    console.log(imagePath);
+    res.sendFile(imagePath);
+  }else{
+    res.status(404).send("Image not found").end();
+  }
+});
+
+app.get('/images', (req,res) => {
+  res.status(200);
+});
 
 const server = app.listen(8080, () => {
   console.log('Server is running on port 8080');
