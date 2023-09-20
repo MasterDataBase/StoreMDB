@@ -50,15 +50,7 @@ export class AssetListComponent implements OnInit {
 
     var dd = {
       content: [
-        // {
-        //   image: "testimage",
-        //   width: 150,
-        //   height: 150
-        // },
-        // { text: 'Bolla di carico del Faggiua!', margin: [0,20] },
-
         {
-          alignment: 'justify',
           columns: [
             {
               image: "testimage",
@@ -66,10 +58,43 @@ export class AssetListComponent implements OnInit {
               height: 150
             },
             { 
-              text: 'ATLANTIS FILM & VIDEO S.R.L. \n\nVia Bordighera 15, 20143 Milano – Italia \n\nTel: +39 02 32001 – Email: info@atlantisfilm.it \n\nSito web: www.atlantisfilm.it \n\nP.IVA e C.F. IT12045820151'
+              text: 'ATLANTIS FILM & VIDEO S.R.L. \n\nVia Bordighera 15, 20143 Milano – Italia \n\nTel: +39 02 32001 – Email: info@atlantisfilm.it \n\nSito web: www.atlantisfilm.it \n\nP.IVA e C.F. IT12045820151',
+              alignment: 'right'
             }
           ]
         },
+        { text: "\n\n\n" },
+        {
+          columns: 
+          [
+            { 
+              text: "Numero DDT: \nPeriodo di impegno: \nEvento: \nIndirizzo: \nCausale: ", 
+              bold: true,
+              alignment: "left"
+            },
+            { 
+              text: "211/2023 \nDal 30/08 al 03/09 \nArmani Venezia (4FF) \nVenezia, Arsenale \nNoleggio ",
+              alignment: "justify"
+            }
+          ]          
+        },
+        {canvas: [{ type: 'line', x1: 0, y1: 5, x2: 595-2*40, y2: 5, lineWidth: 1 }]},
+        {
+          columns:
+          [
+            {
+              text: "\nMezzo di trasporto: \nAutista: \nPeriodo di impegno mezzo: \nNote Producer: ",
+              bold: true,
+              alignment: "left"
+            },
+            {
+              text: "\nCrafter \nGiovanni Lentini, Daniele Bertinelli \nDal 31/08 al 03/09 \nStefano Brina",
+              alignment: "justify"
+            }
+          ]
+        },
+        { text: "\n\n" },
+        {canvas: [{ type: 'line', x1: 0, y1: 5, x2: 595-2*40, y2: 5, lineWidth: 3 }]},
         {
           layout: 'lightHorizontalLines', // optional
           style: 'tableExample',
